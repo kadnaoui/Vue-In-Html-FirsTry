@@ -5,20 +5,74 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .box{
+            width: 40vw;
+            height:20vh;
+            background-color: black;
+            color: white;
+            margin-block: 5vh;
+        }
+        [v-cloak]{
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
         Vue Test
         <br>
-        {{test}}
-        <input type="text" v-model="test">
+        the v-cloak feature is used to prevent anything from rendering until the vue app loads and readdy
+        <br>
+        <button v-on:click="isVisible = !isVisible">Change isVisible</button>
+        <button @click="toogleIsVisible2">Change isVisible2</button>
+        <br>
+        <input type="text" @keyUp.enter="log" @change="log2($event,2)" v-model="test">
+        <br>
+       
+        <div v-show="isVisible" class="box">
+            {{test}}
+            <br>
+            if the variable is visible is flase it will be in dom but the display is none
+        </div>
+
+        <div v-if="isVisible" class="box">
+            {{test}}
+            <br>
+            if the variable is visible is is false it wont be displayed in the dom
+        </div>
+
+        <div v-else-if="isVisible2" class="box">
+            {{test}}
+            <br>
+            {{isVisible2}}
+        </div>
+
+        <div v-else class="box">
+            {{test}}
+            <br>
+            the v-else dont take any argument just like normal elses
+        </div>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
       let app=  Vue.createApp({
         data: function(){
             return{
-                test:'allo'
+                test:'allo',
+                isVisible:true,
+                isVisible2:true
+            }
+        },
+        methods:{
+            toogleIsVisible2 (){
+                this.isVisible2 = !this.isVisible2
+            },
+            log (e){
+                console.log(e.target.value);
+            },
+            log2(e,n){
+                console.log(e.target.value,n);
             }
         }
       });
